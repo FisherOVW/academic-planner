@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Planner</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <h1 class="title">Academic Planner</h1>
+
+    <div class="container">
+
+        <!-- ACTIVE TASKS -->
+        <div class="column">
+            <h2>Active Tasks</h2>
+            <div id="taskList" class="card-list"></div>
+
+            <button class="add-btn" onclick="addTask()">Add Task</button>
+            <button class="suggest-btn" onclick="suggestTask()">Suggest Task</button>
+        </div>
+
+        <!-- COMPLETED TASKS -->
+        <div class="column">
+            <h2>Completed Tasks</h2>
+            <div id="completedList" class="card-list"></div>
+        </div>
+
+        <!-- EXAMS -->
+        <div class="column">
+            <h2>Upcoming Exams</h2>
+            <div id="examList" class="card-list"></div>
+
+            <button class="add-btn" onclick="addExam()">Add Exam</button>
+            <button class="suggest-btn" onclick="suggestExam()">Suggest Exam</button>
+        </div>
+
+    </div>
+
+    <script src="planner.js"></script>
+</body>
+</html>
