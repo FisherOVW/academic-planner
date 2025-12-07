@@ -3,42 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Academic Planner</title>
+    <title>Colin’s Advanced Planner</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-    <h1 class="title">Academic Planner</h1>
+    <div class="nav">
+        <button class="tab active" data-tab="tasks">Tasks</button>
+        <button class="tab" data-tab="exams">Exams</button>
+        <button class="tab" data-tab="completed">Completed</button>
+    </div>
 
     <div class="container">
 
-        <!-- ACTIVE TASKS -->
-        <div class="column">
+        <!-- TASKS TAB -->
+        <section id="tasks" class="tab-content active">
             <h2>Active Tasks</h2>
-            <div id="taskList" class="card-list"></div>
+            <div id="taskList" class="list"></div>
+            <button class="add-btn" onclick="openModal('task')">+</button>
+        </section>
 
-            <button class="add-btn" onclick="addTask()">Add Task</button>
-            <button class="suggest-btn" onclick="suggestTask()">Suggest Task</button>
-        </div>
-
-        <!-- COMPLETED TASKS -->
-        <div class="column">
-            <h2>Completed Tasks</h2>
-            <div id="completedList" class="card-list"></div>
-        </div>
-
-        <!-- EXAMS -->
-        <div class="column">
+        <!-- EXAMS TAB -->
+        <section id="exams" class="tab-content">
             <h2>Upcoming Exams</h2>
-            <div id="examList" class="card-list"></div>
+            <div id="examList" class="list"></div>
+            <button class="add-btn" onclick="openModal('exam')">+</button>
+        </section>
 
-            <button class="add-btn" onclick="addExam()">Add Exam</button>
-            <button class="suggest-btn" onclick="suggestExam()">Suggest Exam</button>
-        </div>
+        <!-- COMPLETED TAB -->
+        <section id="completed" class="tab-content">
+            <h2>Completed</h2>
+            <div id="completedList" class="list"></div>
+        </section>
 
     </div>
 
-    <script src="planner.js"></script>
+    <!-- POP-UP MODAL -->
+    <div id="modal" class="modal hidden">
+        <div class="modal-content glass">
+            <h3 id="modalTitle">Add Task</h3>
+
+            <label>Name:</label>
+            <input id="modalName">
+
+            <label>Days Until Due:</label>
+            <input id="modalDays" type="number" min="0">
+
+            <label>Weight (1–5):</label>
+            <input id="modalWeight" type="number" min="1" max="5">
+
+            <label id="examDateLabel" class="hidden">Exam Date:</label>
+            <input id="modalDate" type="date" class="hidden">
+
+            <div class="modal-buttons">
+                <button class="cancel" onclick="closeModal()">Cancel</button>
+                <button class="confirm" onclick="submitModal()">Add</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
 </body>
 </html>
