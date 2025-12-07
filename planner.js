@@ -1,10 +1,10 @@
-// ---------- DATA STORAGE SETUP ----------
+// ---------- DATA ----------
 let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
 let exams = JSON.parse(localStorage.getItem("exams") || "[]");
 let completed = JSON.parse(localStorage.getItem("completed") || "[]");
 
 
-// ---------- HYBRID URGENCY ALGORITHM ----------
+// ---------- HYBRID ALGORITHM ----------
 function urgencyScore(days, weight, isExam) {
 
     let priority = weight * (10 / (days + 1));
@@ -19,7 +19,7 @@ function urgencyScore(days, weight, isExam) {
 }
 
 
-// ---------- CARD GLOW SYSTEM ----------
+// ---------- GLOW ----------
 function glowClass(score) {
     if (score >= 12) return "glow-red";
     if (score >= 7) return "glow-orange";
@@ -28,7 +28,7 @@ function glowClass(score) {
 }
 
 
-// ---------- RENDER FUNCTIONS ----------
+// ---------- RENDERING ----------
 function renderAll() {
     renderTasks();
     renderExams();
@@ -90,7 +90,7 @@ function renderCompleted() {
 }
 
 
-// ---------- COMPLETE FUNCTIONS ----------
+// ---------- COMPLETE ----------
 function completeTask(i) {
     completed.push(tasks[i].name);
     tasks.splice(i, 1);
@@ -163,7 +163,7 @@ document.querySelectorAll(".tab").forEach(btn => {
 });
 
 
-// ---------- AUTO SORT EVERY 10 SECONDS ----------
+// ---------- AUTO SORT ----------
 setInterval(() => {
     tasks.forEach(t => t.score = urgencyScore(t.days, t.weight, false));
     exams.forEach(e => {
@@ -174,5 +174,5 @@ setInterval(() => {
 }, 10000);
 
 
-// ---------- INITIAL RENDER ----------
+// ---------- START ----------
 renderAll();
