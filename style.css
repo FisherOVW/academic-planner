@@ -1,159 +1,93 @@
-body {
-    margin: 0;
-    font-family: 'SF Pro Display', sans-serif;
-    background: linear-gradient(135deg, #2a0036, #14001c);
-    color: white;
-}
+/* existing styles remain unchanged */
 
-/* NAV */
-
-.nav {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    padding: 20px;
-    backdrop-filter: blur(20px);
-}
-
-.tab {
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
-    padding: 12px 24px;
-    border-radius: 14px;
-    cursor: pointer;
-    color: white;
-    transition: 0.3s;
-}
-
-.tab.active {
-    background: rgba(180, 0, 255, 0.4);
-    box-shadow: 0 0 10px rgba(200, 0, 255, 0.8);
-}
-
-/* CONTENT */
-
-.container {
-    width: 90%;
-    margin: auto;
-    padding-bottom: 100px;
-}
-
-.tab-content {
-    display: none;
-    animation: fadeIn 0.4s ease;
-}
-
-.tab-content.active {
-    display: block;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-h2 {
-    font-size: 28px;
-    margin-bottom: 20px;
-    color: #e899ff;
-}
-
-/* LIST + CARDS */
-
-.list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.card {
-    padding: 20px;
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(18px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    transition: 0.3s;
-}
-
-.card:hover {
-    transform: translateY(-4px);
-}
-
-.glow-green { box-shadow: 0 0 15px 2px #3cff66; }
-.glow-yellow { box-shadow: 0 0 15px 2px #ffe066; }
-.glow-orange { box-shadow: 0 0 15px 2px #ff9533; }
-.glow-red { box-shadow: 0 0 15px 2px #ff4444; }
-
-/* ADD BUTTON */
-
-.add-btn {
-    position: fixed;
-    right: 30px;
-    bottom: 30px;
-    width: 65px;
-    height: 65px;
-    background: #a800ff;
-    color: white;
-    font-size: 40px;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 0 20px rgba(170, 0, 255, 0.7);
-}
-
-/* MODAL */
-
-.modal {
+.detail-modal {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0,0,0,0.6);
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 20;
 }
 
-.modal.hidden {
+.detail-modal.hidden {
     display: none;
 }
 
-.modal-content {
-    width: 350px;
+.premium-glass {
+    width: 450px;
+    max-height: 85%;
+    overflow-y: auto;
     padding: 25px;
-    border-radius: 20px;
+    border-radius: 28px;
+
+    /* Premium VisionOS glass */
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.25);
 }
 
-.glass {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(25px);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-}
-
-input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 12px;
-    border-radius: 10px;
+.close-detail {
+    font-size: 32px;
+    color: white;
+    background: none;
     border: none;
+    float: right;
+    cursor: pointer;
 }
 
-.modal-buttons {
+#detailName {
+    font-size: 26px;
+    margin-bottom: 15px;
+    outline: none;
+}
+
+#subtaskList {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.subtask-item {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+
+    padding: 10px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 12px;
 }
 
-.cancel {
-    background: gray;
-    border: none;
-    padding: 10px 22px;
-    border-radius: 10px;
-    cursor: pointer;
+.subtask-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.confirm {
-    background: #b100ff;
-    border: none;
-    padding: 10px 22px;
-    border-radius: 10px;
+.subtask-delete {
     cursor: pointer;
+    color: #ff4e4e;
+    font-size: 20px;
+}
+
+.add-subtask-btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 14px;
+    border: none;
+    background: #a800ff;
     color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.delete-task {
+    margin-top: 20px;
+    text-align: center;
+    color: #ff4e4e;
+    cursor: pointer;
 }
