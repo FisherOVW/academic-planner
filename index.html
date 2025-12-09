@@ -38,7 +38,7 @@
 
     </div>
 
-    <!-- ADD TASK / EXAM MODAL -->
+    <!-- ADD TASK/EXAM MODAL -->
     <div id="modal" class="modal hidden">
         <div class="modal-content glass">
             <h3 id="modalTitle">Add Task</h3>
@@ -46,14 +46,11 @@
             <label>Name:</label>
             <input id="modalName">
 
-            <label id="daysLabel">Days Until Due:</label>
-            <input id="modalDays" type="number" min="0">
+            <label>Due Date:</label>
+            <input id="modalDate" type="date">
 
             <label>Weight (1–5):</label>
             <input id="modalWeight" type="number" min="1" max="5">
-
-            <label id="examDateLabel" class="hidden">Exam Date:</label>
-            <input id="modalDate" type="date" class="hidden">
 
             <div class="modal-buttons">
                 <button class="cancel" onclick="closeModal()">Cancel</button>
@@ -62,7 +59,7 @@
         </div>
     </div>
 
-    <!-- PREMIUM TASK DETAIL POPUP -->
+    <!-- TASK DETAIL POPUP -->
     <div id="detailModal" class="detail-modal hidden">
         <div class="detail-content premium-glass">
 
