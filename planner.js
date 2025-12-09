@@ -15,7 +15,7 @@ function daysUntil(dateString) {
 }
 
 
-// ---------- URGENCY ALGORITHM ----------
+// ---------- URGENCY SCORE ----------
 function urgencyScore(days, weight, isExam) {
     let priority = weight * (10 / (days + 1));
     let heat = (weight * 2) + (8 / (days + 1));
@@ -23,16 +23,8 @@ function urgencyScore(days, weight, isExam) {
 
     let score = (0.5 * priority) + (0.3 * heat) + (0.2 * decay);
     if (isExam) score *= 1.5;
+
     return score;
-}
-
-
-// ---------- GLOW ----------
-function glowClass(score) {
-    if (score >= 12) return "glow-red";
-    if (score >= 7) return "glow-orange";
-    if (score >= 4) return "glow-yellow";
-    return "glow-green";
 }
 
 
@@ -48,7 +40,6 @@ function renderTasks() {
     let div = document.getElementById("taskList");
     div.innerHTML = "";
 
-    // update scores
     tasks.forEach(t => {
         t.daysLeft = daysUntil(t.date);
         t.score = urgencyScore(t.daysLeft, t.weight, false);
@@ -58,7 +49,12 @@ function renderTasks() {
 
     tasks.forEach((t, i) => {
         let card = document.createElement("div");
-        card.className = `card ${glowClass(t.score)}`;
+        card.className = "card";
+
+        // ---------- Light purple glow OR light red glow ----------
+        if (t.score >= 10) {
+            card.classList.add("urgent"); // red glow
+        }
 
         card.innerHTML = `
             <strong>${t.name}</strong><br>
@@ -66,6 +62,7 @@ function renderTasks() {
             <button onclick="completeTask(${i})">Complete</button>
         `;
 
+        // clicking anywhere except the button opens detail modal
         card.addEventListener("click", (e) => {
             if (e.target.tagName !== "BUTTON") openDetail(i);
         });
@@ -89,7 +86,9 @@ function renderExams() {
         let daysLeft = daysUntil(e.date);
 
         let card = document.createElement("div");
-        card.className = `card ${glowClass(e.score)}`;
+        card.className = "card";
+        if (e.score >= 10) card.classList.add("urgent");
+
         card.innerHTML = `
             <strong>${e.name}</strong><br>
             ${daysLeft} days left<br>
@@ -136,11 +135,8 @@ function openModal(type) {
     document.getElementById("modalTitle").textContent =
         type === "task" ? "Add Task" : "Add Exam";
 
-    document.getElementById("daysLabel").classList.toggle("hidden", type !== "task");
-    document.getElementById("modalDays").classList.toggle("hidden", type !== "task");
-
-    document.getElementById("examDateLabel").classList.toggle("hidden", type === "task");
-    document.getElementById("modalDate").classList.toggle("hidden", type === "task");
+    // Tasks + Exams BOTH use date now
+    document.getElementById("modalDate").value = "";
 }
 
 function closeModal() {
@@ -149,30 +145,23 @@ function closeModal() {
 
 function submitModal() {
     let name = document.getElementById("modalName").value;
+    let date = document.getElementById("modalDate").value;
     let weight = Number(document.getElementById("modalWeight").value);
 
+    let daysLeft = daysUntil(date);
+    let score = urgencyScore(daysLeft, weight, modalType === "exam");
+
     if (modalType === "task") {
-        let days = Number(document.getElementById("modalDays").value);
-        let date = new Date();
-        date.setDate(date.getDate() + days);
-        let iso = date.toISOString().split("T")[0];
-
-        let score = urgencyScore(days, weight, false);
-
         tasks.push({
             name,
-            date: iso,
+            date,
             weight,
-            daysLeft: days,
+            daysLeft,
             score,
             subtasks: []
         });
 
     } else {
-        let date = document.getElementById("modalDate").value;
-        let daysLeft = daysUntil(date);
-        let score = urgencyScore(daysLeft, weight, true);
-
         exams.push({
             name,
             date,
@@ -186,17 +175,17 @@ function submitModal() {
 }
 
 
-// ---------- DETAIL MODAL ----------
+// ---------- DETAIL POPUP ----------
 function openDetail(i) {
     currentTaskIndex = i;
-    let task = tasks[i];
 
-    document.getElementById("detailName").textContent = task.name;
-    document.getElementById("detailDate").value = task.date;
-    document.getElementById("detailWeight").value = task.weight;
+    let t = tasks[i];
+
+    document.getElementById("detailName").textContent = t.name;
+    document.getElementById("detailDate").value = t.date;
+    document.getElementById("detailWeight").value = t.weight;
 
     updateDetailDaysLeft();
-
     renderSubtasks();
 
     document.getElementById("detailModal").classList.remove("hidden");
@@ -204,6 +193,12 @@ function openDetail(i) {
 
 function closeDetail() {
     document.getElementById("detailModal").classList.add("hidden");
+}
+
+function updateDetailDaysLeft() {
+    let t = tasks[currentTaskIndex];
+    let d = daysUntil(t.date);
+    document.getElementById("detailDaysLeft").textContent = `Due in ${d} days`;
 }
 
 
@@ -224,12 +219,6 @@ document.getElementById("detailWeight").addEventListener("input", () => {
     renderAll();
 });
 
-function updateDetailDaysLeft() {
-    let task = tasks[currentTaskIndex];
-    let days = daysUntil(task.date);
-    document.getElementById("detailDaysLeft").textContent = `Due in ${days} days`;
-}
-
 
 // ---------- SUBTASKS ----------
 function renderSubtasks() {
@@ -244,8 +233,7 @@ function renderSubtasks() {
 
         div.innerHTML = `
             <div class="subtask-left">
-                <input type="checkbox" ${sub.done ? "checked" : ""} 
-                       onchange="toggleSubtask(${idx})">
+                <input type="checkbox" ${sub.done ? "checked" : ""} onchange="toggleSubtask(${idx})">
                 <span style="text-decoration:${sub.done ? "line-through" : "none"};">
                     ${sub.text}
                 </span>
@@ -301,7 +289,7 @@ function save() {
 }
 
 
-// ---------- TABS ----------
+// ---------- TAB SWITCHING ----------
 document.querySelectorAll(".tab").forEach(btn => {
     btn.addEventListener("click", () => {
         document.querySelectorAll(".tab").forEach(b => b.classList.remove("active"));
@@ -310,12 +298,13 @@ document.querySelectorAll(".tab").forEach(btn => {
         document.querySelectorAll(".tab-content").forEach(sec =>
             sec.classList.remove("active")
         );
+
         document.getElementById(btn.dataset.tab).classList.add("active");
     });
 });
 
 
-// ---------- AUTO-SORT INTERVAL ----------
+// ---------- AUTO REFRESH ----------
 setInterval(renderAll, 10000);
 
 
