@@ -38,7 +38,7 @@
 
     </div>
 
-    <!-- POP-UP MODAL -->
+    <!-- ADD TASK / EXAM MODAL -->
     <div id="modal" class="modal hidden">
         <div class="modal-content glass">
             <h3 id="modalTitle">Add Task</h3>
@@ -46,7 +46,7 @@
             <label>Name:</label>
             <input id="modalName">
 
-            <label>Days Until Due:</label>
+            <label id="daysLabel">Days Until Due:</label>
             <input id="modalDays" type="number" min="0">
 
             <label>Weight (1–5):</label>
@@ -59,6 +59,31 @@
                 <button class="cancel" onclick="closeModal()">Cancel</button>
                 <button class="confirm" onclick="submitModal()">Add</button>
             </div>
+        </div>
+    </div>
+
+    <!-- PREMIUM TASK DETAIL POPUP -->
+    <div id="detailModal" class="detail-modal hidden">
+        <div class="detail-content premium-glass">
+
+            <button class="close-detail" onclick="closeDetail()">×</button>
+
+            <h2 contenteditable="true" id="detailName"></h2>
+
+            <label>Due Date:</label>
+            <input type="date" id="detailDate">
+
+            <p id="detailDaysLeft"></p>
+
+            <label>Weight:</label>
+            <input type="range" min="1" max="5" id="detailWeight">
+
+            <h3>Subtasks</h3>
+            <div id="subtaskList"></div>
+
+            <button class="add-subtask-btn" onclick="addSubtask()">Add Subtask</button>
+
+            <p class="delete-task" onclick="deleteCurrentTask()">Delete Task</p>
         </div>
     </div>
 
